@@ -13,6 +13,7 @@ services:
   fpm:
     build: ./docker/fpm
     volumes:
+      - ./docker/fpm/zzz.conf:/etc/php7/php-fpm.d/zzz.conf
       - ./source:/var/www/html
     ports:
       - "9000"
