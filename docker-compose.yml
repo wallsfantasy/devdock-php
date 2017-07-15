@@ -1,20 +1,22 @@
-version: '2'
+version: '3'
 services:
 
   nginx:
     build: ./docker/nginx
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
-      - ./source:/var/www/html
+      - ./docker/nginx/vhosts:/etc/nginx/conf.d
+      - ..:/var/www/html
     ports:
       - "8080:80"
 
   fpm:
     build: ./docker/fpm
     volumes:
-      - ./docker/fpm/zzz.conf:/etc/php7/php-fpm.d/zzz.conf
-      - ./source:/var/www/html
+      - ./docker/fpm/php.ini:/etc/php7/php.ini
+      - ./docker/fpm/zzz-custom.conf:/etc/php7/php-fpm.d/zzz-custom.conf
+      - ./docker/fpm/info:/var/www/info
+      - ..:/var/www/html
     ports:
       - "9000"
 
