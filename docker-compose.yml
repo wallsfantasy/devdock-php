@@ -9,6 +9,10 @@ services:
       - ..:/var/www/html
     ports:
       - "80:80"
+      - "443:443"
+    depends_on:
+      - "fpm"
+    working_dir: "/var/www/html"
 
   fpm:
     build: ./docker/fpm
@@ -19,6 +23,7 @@ services:
       - ..:/var/www/html
     ports:
       - "9000"
+    working_dir: "/var/www/html"
 
   postgres:
     image: postgres:alpine
