@@ -1,0 +1,5 @@
+*
+!.gitignore
+!fpm.conf
+!nginx.conf
+!*.example
