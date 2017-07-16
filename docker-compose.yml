@@ -31,6 +31,8 @@ services:
       - ./docker/cli/php.ini:/etc/php7/php.ini
       - ..:/var/www/html
     working_dir: "/var/www/html"
+    stdin_open: true
+    tty: true
 
   postgres:
     image: postgres:alpine
