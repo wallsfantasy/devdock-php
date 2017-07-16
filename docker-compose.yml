@@ -25,6 +25,13 @@ services:
       - "9000"
     working_dir: "/var/www/html"
 
+  cli:
+    build: ./docker/cli
+    volumes:
+      - ./docker/cli/php.ini:/etc/php7/php.ini
+      - ..:/var/www/html
+    working_dir: "/var/www/html"
+
   postgres:
     image: postgres:alpine
     volumes:
