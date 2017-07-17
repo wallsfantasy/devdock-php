@@ -6,13 +6,13 @@ services:
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/vhosts:/etc/nginx/conf.d
-      - ..:/var/www/html
+      - ..:/var/www
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - "fpm"
-    working_dir: "/var/www/html"
+    working_dir: "/var/www"
 
   fpm:
     build: ./docker/fpm
@@ -22,19 +22,19 @@ services:
       - ./docker/fpm/info:/var/www/info
       - ./docker/fpm/xdebug.ini:/etc/php7/conf.d/xdebug.ini
       - ./docker/fpm/logs/xdebug.log:/tmp/xdebug.log
-      - ..:/var/www/html
+      - ..:/var/www
     ports:
       - "9000"
-    working_dir: "/var/www/html"
+    working_dir: "/var/www"
 
   cli:
     build: ./docker/cli
     volumes:
       - ./docker/cli/php.ini:/etc/php7/php.ini
       - ./docker/cli/info:/var/www/info
-      - ..:/var/www/html
+      - ..:/var/www
     user: "1000"
-    working_dir: "/var/www/html"
+    working_dir: "/var/www"
     stdin_open: true
     tty: true
 
