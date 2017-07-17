@@ -20,6 +20,8 @@ services:
       - ./docker/fpm/php.ini:/etc/php7/php.ini
       - ./docker/fpm/zzz-custom.conf:/etc/php7/php-fpm.d/zzz-custom.conf
       - ./docker/fpm/info:/var/www/info
+      - ./docker/fpm/xdebug.ini:/etc/php7/conf.d/xdebug.ini
+      - ./docker/fpm/logs/xdebug.log:/tmp/xdebug.log
       - ..:/var/www/html
     ports:
       - "9000"
@@ -29,7 +31,9 @@ services:
     build: ./docker/cli
     volumes:
       - ./docker/cli/php.ini:/etc/php7/php.ini
+      - ./docker/cli/info:/var/www/info
       - ..:/var/www/html
+    user: "1000"
     working_dir: "/var/www/html"
     stdin_open: true
     tty: true
