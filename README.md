@@ -21,7 +21,8 @@ to read/modify/understand and shamelessly leave commented-out configs if it remi
     
     127.0.0.1    dev.dock nginx.dock fpm.dock
     ```
-    You might need to add more hosts if you already use them in your development setting.
+    You might want to add more hosts as you need, but using `http://dev.dock/your-project` allow you to easily reuse
+    your host configuration in IDE.
 
 3. Add more Nginx vhost configs using the example provided in `/docker/nginx/vhosts` These files need to have `.conf`
 extension to be loaded by Nginx container.
@@ -30,20 +31,36 @@ extension to be loaded by Nginx container.
 the terminal.
 
 **Note**
-We expect users to install package managements (composers, npm/yarn) from local machine as they are not use to provision
-the framework cache. Also running them bare metal is obviously faster. 
+We expect users to install package managements (composers, npm/yarn) from development machine as they are faster than
+running them inside containers. Up to your framework, class cache might be generated using full directory path so
+e.g. `artisan config:cache` need to run from within `cli` container to correctly generate path reference. 
 
 ## Containers
-Almost every containers are official otherwise we use [Alpine](https://alpinelinux.org) as base image if it make our
-life easier (PHP related images in this case).  
+Almost every containers are official otherwise we use [Alpine](https://hub.docker.com/_/alpine/) as base image if it 
+make our life easier (CLI and FPM in this case).
 
 ### CLI, FPM
 CLI use to execute PHP console commands, run tests and take care of framework cache while FPM is designed solely to
-process http requests. The reason is simply CLI often took longer/heavier tasks so they can't share the same php.ini. 
+process http requests. The reason is simply CLI often took longer/heavier tasks so they can't share the same php.ini.
 
-Both (PHP) CLI and FPM are pre-installed with xdebug and has slightly different config. Because the request hits FPM
-from developer's machine it can "call back" the originator. OTOH, for CLI we `sh` and execute script from the container
-itself thus we need to explicitly configure our IP in `xdebug.ini`.
+#### Exposed Ports
+- FPM: 9000 (internal)
+
+#### Information
+FPM status pages can be accessed at..
+- <http://fpm.dock/status>
+- <http://fpm.dock/ping>
+- <http://fpm.dock/phpinfo.php>
+- <http://fpm.dock/server.php>
+
+CLI you can run following scripts
+- `docker-compose exec cli php /var/www/info/phpinfo.php`
+- `docker-compose exec cli php /var/www/info/server.php`
+
+#### xdebug
+Both (PHP) CLI and FPM are pre-installed with xdebug and has slightly different config. Because the request hits FPM 
+from developer's machine it can "call back" the originator. OTOH, in CLI we `sh` and execute script inside the 
+container thus we need to tell xdebug which host/ip is developer's machine. We can specify it in CLI's `xdebug.ini`.
 
 To find host ip for CLI's xdebug config run this command inside CLI container
     ```
@@ -51,7 +68,16 @@ To find host ip for CLI's xdebug config run this command inside CLI container
     ```
 
 ### Nginx
-(tbd)
+
+#### Exposed Ports
+- http: 80 (internal & host)
+- https: 443 (internal & host)
+
+#### Information
+- <http://nginx.dock/status> 
+
 
 ### PostgreSql
-(tbd)
+
+#### Exposed Ports
+- 5432 (internal & host)
