@@ -31,6 +31,8 @@ services:
     build: ./docker/cli
     volumes:
       - ./docker/cli/php.ini:/etc/php7/php.ini
+      - ./docker/cli/xdebug.ini:/etc/php7/conf.d/xdebug.ini
+      - ./docker/cli/logs/xdebug.log:/tmp/xdebug.log
       - ./docker/cli/info:/var/www/info
       - ..:/var/www
     user: "1000"
