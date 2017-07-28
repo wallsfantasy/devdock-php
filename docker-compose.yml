@@ -29,6 +29,7 @@ services:
 
   cli:
     build: ./docker/cli
+    env_file: .env
     volumes:
       - ./docker/cli/php.ini:/etc/php7/php.ini
       - ./docker/cli/xdebug.ini:/etc/php7/conf.d/xdebug.ini
