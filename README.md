@@ -63,9 +63,8 @@ from developer's machine it can "call back" the originator. OTOH, in CLI we `sh`
 container thus we need to tell xdebug which host/ip is developer's machine. We can specify it in CLI's `xdebug.ini`.
 
 To find host ip for CLI's xdebug config run this command inside CLI container
-    ```
-    /sbin/ip route|awk '/default/ { print $3 }'`
-    ```
+    
+    /sbin/ip route|awk '/default/ { print $3 }'
 
 ### Nginx
 
@@ -81,3 +80,17 @@ To find host ip for CLI's xdebug config run this command inside CLI container
 
 #### Exposed Ports
 - 5432 (internal & host)
+
+
+### Selenium-Chrome
+Currently we use standalone [selenium-chrome-debug](https://github.com/SeleniumHQ/docker-selenium) so we can observe the
+(ghost) browser via VNC
+
+#### VNC Configuration Gotchas
+- Use `localhost:5900` as we exposed to host port.
+- We use no username and selenium's default password which is secret ;)
+- Set VNC color depth to 16 bit as low (e.g. 256) colors will immediately disconnected.
+
+#### Exposed Ports
+- Selenium: 4444 (internal)
+- VNC: 5900 (internal & host)
