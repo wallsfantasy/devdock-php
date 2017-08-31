@@ -53,6 +53,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  redis:
+    image: redis:4-alpine
+    ports:
+      - "6379:6379"
+
   selenium-chrome:
     image: selenium/standalone-chrome-debug:latest
     ports:
